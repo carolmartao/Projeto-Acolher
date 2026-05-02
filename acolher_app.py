@@ -20,12 +20,14 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 # =========================
 st.markdown("""
 <style>
-body { background: #F4F6F1; }
+.stApp {
     background-color: #F5F7F4;
+}
 
 .block-container {
     max-width: 420px;
     margin: auto;
+    padding-top: 2rem;
 }
 
 /* Cards */
