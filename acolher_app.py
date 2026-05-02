@@ -155,7 +155,6 @@ def go(p):
 # 🌿 HOME
 # =========================
 def home():
-def home():
     st.markdown("## 🌿 Acolher")
     st.markdown("<p class='subtitle'>Um espaço gentil para você</p>", unsafe_allow_html=True)
 
