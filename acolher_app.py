@@ -14,7 +14,7 @@ from openai import OpenAI
 # =========================
 st.set_page_config(page_title="Acolher 🌿", layout="centered")
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-st.write(os.getenv("OPENAI_API_KEY"))
+
 # =========================
 # 🎨 UI
 # =========================
