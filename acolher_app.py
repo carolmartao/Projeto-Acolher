@@ -21,14 +21,50 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 st.markdown("""
 <style>
 body { background: #F4F6F1; }
-.block {
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    margin-bottom: 15px;
+    background-color: #F5F7F4;
+
+.block-container {
+    max-width: 420px;
+    margin: auto;
 }
-button {
-    border-radius: 999px !important;
+
+/* Cards */
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+}
+
+/* Tipografia */
+h1 {
+    font-size: 28px;
+    font-weight: 600;
+}
+.subtitle {
+    color: #6B7866;
+    font-size: 15px;
+}
+
+/* Botões */
+.stButton > button {
+    width: 100%;
+    border-radius: 999px;
+    background-color: #7FA37A;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+}
+.stButton > button:hover {
+    background-color: #6A8F65;
+}
+
+/* Inputs */
+textarea {
+    border-radius: 16px !important;
+    border: 1px solid #E4E7E2 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -117,37 +153,52 @@ def go(p):
 # 🌿 HOME
 # =========================
 def home():
-    st.title("🌿 Acolher")
+def home():
+    st.markdown("## 🌿 Acolher")
+    st.markdown("<p class='subtitle'>Um espaço gentil para você</p>", unsafe_allow_html=True)
+
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
 
     mood = st.select_slider(
-        "Como você está hoje?",
+        "Como você chega hoje?",
         options=["😔", "😐", "🙂", "😊", "✨"]
     )
 
-    if st.button("Começar escrita"):
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if st.button("Começar escrita ✍️"):
         st.session_state.entry["mood_before"] = mood
         go("write")
 
-    if st.button("📖 Histórico"):
-        go("history")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("📖 Histórico"):
+            go("history")
+    with col2:
+        if st.button("✨ Padrões"):
+            go("insights")
 
-    if st.button("✨ Ver padrões"):
-        go("insights")
 
 # =========================
 # ✍️ WRITE
 # =========================
 def write():
-    st.subheader("Escreva livremente")
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
 
-    content = st.text_area("")
+    st.markdown("### ✍️ Escreva livremente")
+
+    content = st.text_area(
+        "",
+        height=220,
+        placeholder="Comece pelo que vier..."
+    )
 
     mood_after = st.select_slider(
         "Como você se sente agora?",
         options=["😔", "😐", "🙂", "😊", "✨"]
     )
 
-    if st.button("Salvar"):
+    if st.button("Guardar esse momento 🌿"):
         save_entry({
             "id": str(uuid.uuid4()),
             "date": datetime.now().isoformat(),
@@ -157,11 +208,13 @@ def write():
         })
         go("done")
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # =========================
 # 📖 HISTORY
 # =========================
 def history():
-    st.title("📖 Histórico")
+    st.markdown("## 📖 Histórico")
 
     for e in get_entries():
         with st.expander(e["date"]):
@@ -169,6 +222,8 @@ def history():
 
     if st.button("Voltar"):
         go("home")
+
+
 
 # =========================
 # ✨ INSIGHTS
@@ -200,9 +255,15 @@ def insights():
 # 🌱 DONE
 # =========================
 def done():
-    st.success("Você se escutou hoje 🌿")
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+
+    st.markdown("### 🌱 Você se escutou hoje")
+    st.markdown("<p class='subtitle'>Isso já é suficiente por agora.</p>", unsafe_allow_html=True)
+
     if st.button("Voltar"):
         go("home")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =========================
 # ROUTER
